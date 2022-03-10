@@ -83,7 +83,7 @@ function Admin() {
           <Button
             type="link"
             onClick={() =>
-              router.push({ pathname: "/Artists", query: { user: "admin" } })
+              router.push({ pathname: "/Artists", query: { user: artistGenresList.loginDetails.type } })
             }
           >
             View Artists
@@ -104,7 +104,7 @@ function Admin() {
           <CardFooterView
             type="link"
             onClick={() =>
-              router.push({ pathname: "/Genres", query: { user: "admin" } })
+              router.push({ pathname: "/Genres", query: { user: artistGenresList.loginDetails.type } })
             }
           >
             View Genres

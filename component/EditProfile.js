@@ -1,6 +1,6 @@
 import { Form, Input, InputNumber, Button, Modal } from 'antd';
 import {editProfileApi} from "../store/action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from 'react';
 
 const layout = {
@@ -12,6 +12,7 @@ function EditProfile(props) {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { selectedGenres, genresId, header, showModel, closePopup } = props;
+  const userType = useSelector( state => state.reducers.loginDetails.type );
 
   useEffect(() => {
     if(Object.keys(selectedGenres).length !== 0) {
@@ -33,7 +34,7 @@ function EditProfile(props) {
   
   const onFinish = (values) => {
       console.log('values', values)
-      dispatch(editProfileApi(values));
+      dispatch(editProfileApi({...values, type: userType}));
       console.log(values)
       props.closePopup();
     
@@ -55,8 +56,8 @@ function EditProfile(props) {
       >
         <Input style={{ width: '100%' }} />
       </Form.Item>
-      <Form.Item name='email' label="Email">
-        <Input />
+      <Form.Item disabled name='email' label="Email">
+        <Input  disabled={true} />
       </Form.Item>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
         <Button type="primary" htmlType="submit">

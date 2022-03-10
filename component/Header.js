@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { UserOutlined } from "@ant-design/icons";
 import { COLOR } from "../constant/Constant";
+import { useSelector } from "react-redux";
 
 const HeaderStyle = styled.div`
 width: 100%;
@@ -79,6 +80,8 @@ const UserIconWrapper = styled.div`
 `;
 
 export default function Header(props) {
+  const userType = useSelector( state => state.reducers.loginDetails.type );
+  const userTypee = useSelector( state => state.reducers);
   const ComponentWrapper = styled.div`
     background-color: ${COLOR.Primary};
     margin-left: 5%;
@@ -87,7 +90,8 @@ export default function Header(props) {
     border-radius: 16px;
     height: ${props.windowheight ? props.windowheight : "auto"};
   `;
-  const { page, userType } = props;
+  const { page } = props;
+  console.log('loginDetails',userType, userTypee);
   return (
     <>
       <HeaderStyle>
@@ -97,7 +101,7 @@ export default function Header(props) {
               <UL>
                 <LI>
                   <Link
-                    href={{ pathname: "/Dashboard", query: { user: "admin" } }}
+                    href={{ pathname: "/Dashboard", query: { user: userType } }}
                   >
                     <Atag sty>Dashboard</Atag>
                   </Link>
@@ -105,7 +109,7 @@ export default function Header(props) {
                 </LI>
                 <LI>
                   <Link
-                    href={{ pathname: "/Artists", query: { user: "admin" } }}
+                    href={{ pathname: "/Artists", query: { user: userType } }}
                   >
                     <Atag>Artists</Atag>
                   </Link>
@@ -113,7 +117,7 @@ export default function Header(props) {
                 </LI>
                 <LI>
                   <Link
-                    href={{ pathname: "/Genres", query: { user: "admin" } }}
+                    href={{ pathname: "/Genres", query: { user: userType } }}
                   >
                     <Atag>Genres</Atag>
                   </Link>
@@ -122,7 +126,7 @@ export default function Header(props) {
               </UL>
             </ULWrapper>
             <Link
-                    href={{ pathname: "/ProfilePage", query: { user: "admin" } }}
+                    href={{ pathname: "/ProfilePage", query: { user: userType } }}
                   >
                   <UserIconWrapper >
               <UserIcon />

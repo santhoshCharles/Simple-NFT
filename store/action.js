@@ -1,90 +1,106 @@
-import * as types from './types';
-import axios from 'axios';
-import { BASE_LINK, API_URL } from '../constant/ApiLinks';
+import * as types from "./types";
+import axios from "axios";
+import { BASE_LINK, API_URL } from "../constant/ApiLinks";
 import { success, errorFunction } from "../component/Messages";
 
-export const getArtistApi = ()=> async(dispatch, getState) => {
-    axios
-    .get(`${BASE_LINK}${API_URL.getArtist}`)
-    .then((data ) => {
-      dispatch(setArtistList(data.data));
-    })
-    .catch((error) => {
-        
-    });
-}
-
-export const getGenresApi = ()=> async(dispatch, getState) => {
-    axios
-    .get(`${BASE_LINK}${API_URL.getGenres}`)
-    .then((data ) => {
-      dispatch(setGenresList(data.data));
-    })
-    .catch((error) => {
-        
-    });
-}
-
-export const addGenersApi = (payload) => async(dispatch, getState) => {
-  axios.post(`${BASE_LINK}${API_URL.getGenres}`, payload)
-  .then( (response) => {
-    console.log(response);
-    success('Added successfully');
-    dispatch(setGenresList(response.data))
-  })
-  .catch(function (error) {
-    errorFunction("Somthing going wrong!. Try later");
-    console.log(error);
-  });
-}
-
-export const editGenersApi = (payload) => async(dispatch, getState) => {
-  axios.put(`${BASE_LINK}${API_URL.getGenres}`, payload)
-  .then( (response) => {
-    console.log(response);
-    success('Geners updated successfully');
-    dispatch(setGenresList(response.data))
-  })
-  .catch(function (error) {
-    errorFunction("Somthing going wrong!. Try later");
-    console.log(error);
-  });
-}
-
-export const deleteGenersApi = (payload) => async(dispatch, getState) => {
-  axios.delete(`${BASE_LINK}${API_URL.getGenres}`, {
-    data: {
-      payload
+export const apiCallFunction =
+  (payload, type, apiLink, dispatchFunction) => async (dispatch, getState) => {
+    console.log("data", payload, type, apiLink, dispatchFunction);
+    switch (type) {
+      case "POST":
+        axios
+          .post(`${BASE_LINK}${apiLink}`, payload)
+          .then((response) => {
+            console.log(response);
+            success("Added successfully");
+            dispatch(dispatchFunction(response.data));
+          })
+          .catch(function (error) {
+            errorFunction("Somthing going wrong!. Try later");
+            console.log(error);
+          });
+        break;
+      case "GET":
+        axios
+          .get(`${BASE_LINK}${apiLink}`)
+          .then((data) => {
+            dispatch(dispatchFunction(data.data));
+          })
+          .catch((error) => {});
+        break;
+      case "PUT":
+        axios
+          .put(`${BASE_LINK}${apiLink}`, payload)
+          .then((response) => {
+            console.log(response);
+            success("Geners updated successfully");
+            dispatch(dispatchFunction(response.data));
+          })
+          .catch(function (error) {
+            errorFunction("Somthing going wrong!. Try later");
+            console.log(error);
+          });
+        break;
+      case "DELETE":
+        axios
+          .delete(`${BASE_LINK}${apiLink}`, {
+            data: {
+              payload,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            success("Geners deleted successfully");
+            dispatch(dispatchFunction(response.data));
+          })
+          .catch(function (error) {
+            errorFunction("Somthing going wrong!. Try later");
+            console.log(error);
+          });
     }
-  })
-  .then( (response) => {
-    console.log(response);
-    success('Geners deleted successfully');
-    dispatch(setGenresList(response.data))
-  })
-  .catch(function (error) {
-    errorFunction("Somthing going wrong!. Try later");
-    console.log(error);
-  });
-}
+  };
 
-export const loginApi = (payload) => async(dispatch, getState) => {
-  axios.post(`${BASE_LINK}${API_URL.login}`, payload)
-  .then( (response) => {
-    console.log(response);
-    success('Added successfully');
-    dispatch(setLoginDetails(response.data))
-  })
-  .catch(function (error) {
-    errorFunction('Unauthorized User');
-    console.log(error);
-  });
-}
+export const getArtistApi = () => async (dispatch, getState) =>
+  dispatch(apiCallFunction([], "GET", API_URL.getArtist, setArtistList));
 
-export const setArtistList = (payload) => ({ type: types.GET_ARTIST_LIST, payload: payload });
+export const getGenresApi = () => async (dispatch, getState) =>
+  dispatch(apiCallFunction([], "GET", API_URL.getGenres, setGenresList));
 
-export const setGenresList = (payload) => ({ type: types.GET_GENRES_LIST, payload: payload });
+export const addGenersApi = (payload) => async (dispatch, getState) =>
+  dispatch(apiCallFunction(payload, "POST", API_URL.getGenres, setGenresList));
 
-export const setLoginDetails = (payload) => ({ type: types.SET_LOGIN_DETAILS, payload: payload });
+export const editGenersApi = (payload) => async (dispatch, getState) =>
+  dispatch(apiCallFunction(payload, "PUT", API_URL.getGenres, setGenresList));
 
-setArtistList
+export const deleteGenersApi = (payload) => async (dispatch, getState) =>
+  dispatch(
+    apiCallFunction(payload, "DELETE", API_URL.getGenres, setGenresList)
+  );
+
+export const loginApi = (payload) => async (dispatch, getState) =>
+  dispatch(apiCallFunction(payload, "POST", API_URL.login, setLoginDetails));
+
+export const editProfileApi = (payload) => async (dispatch, getState) =>
+  dispatch(
+    apiCallFunction(payload, "POST", API_URL.editProfile, setUserDetails)
+  );
+
+export const setArtistList = (payload) => ({
+  type: types.GET_ARTIST_LIST,
+  payload: payload,
+});
+
+export const setGenresList = (payload) => ({
+  type: types.GET_GENRES_LIST,
+  payload: payload,
+});
+
+export const setLoginDetails = (payload) => ({
+  type: types.SET_LOGIN_DETAILS,
+  payload: payload,
+});
+
+export const setUserDetails = (payload) => ({
+  type: types.SET_USER_DETAILS,
+  payload: payload,
+});

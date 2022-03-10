@@ -9,6 +9,7 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import EditProfile from "../../component/EditProfile";
+import { editProfileApi } from "../../store/action";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -121,6 +122,7 @@ function ProfilePage(props) {
         closePopup={()=>setShowModel(false)}
         showModel={showModel}
         selectedGenres={loginDetails}
+        saveDetails={(details)=>props.dispatch(editProfileApi(details))}
       />
       </Header>
     </>

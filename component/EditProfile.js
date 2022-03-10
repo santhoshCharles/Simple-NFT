@@ -1,5 +1,5 @@
 import { Form, Input, InputNumber, Button, Modal } from 'antd';
-import { addGenersApi, editGenersApi } from "../store/action";
+import {editProfileApi} from "../store/action";
 import { useDispatch } from "react-redux";
 import React, { useEffect } from 'react';
 
@@ -24,23 +24,18 @@ function EditProfile(props) {
       form.setFieldsValue({
         phone: selectedGenres.mobileNumber,
       });
+      form.setFieldsValue({
+        email: selectedGenres.email,
+      });
     }
     
   },[props]);
   
   const onFinish = (values) => {
-    if(Object.keys(selectedGenres).length === 0) {
-      dispatch(addGenersApi({Title: values.name, des: values.introduction, id: genresId }));
-    } else {
-      dispatch(editGenersApi({Title: values.name, des: values.introduction, id: genresId }));
-    }
-    form.setFieldsValue({
-      name: '',
-    });
-    form.setFieldsValue({
-      introduction: '',
-    });
-    closePopup();
+      console.log('values', values)
+      dispatch(editProfileApi(values));
+      console.log(values)
+    
   };
 
   return (
@@ -58,6 +53,9 @@ function EditProfile(props) {
         rules={[{ required: true, message: 'Please input your phone number!' }]}
       >
         <Input style={{ width: '100%' }} />
+      </Form.Item>
+      <Form.Item name='email' label="Email">
+        <Input />
       </Form.Item>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
         <Button type="primary" htmlType="submit">

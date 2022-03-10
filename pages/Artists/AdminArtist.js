@@ -1,17 +1,18 @@
-import react from "react";
+import react, {useEffect} from "react";
 import styled from "styled-components";
 import "antd/dist/antd.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import { COLOR } from "../../constant/Constant";
 
 const ArtistListWrapper = styled.div`
   padding-left: 5%;
   padding-right: 5%;
-  padding-top: 1%;
   display: flex;
     flex-direction: column;
     /* justify-content: center; */
     align-items: center;
+    padding-bottom: 1%;
 `;
 const UserName = styled.div`
   font-size: 19px;
@@ -23,12 +24,13 @@ const UserName = styled.div`
 const Card = styled.div`
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
-  width: 70%;
+  width: 90%;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top: 20px;
   padding-left: 20px;
   padding-bottom: 8px;
   display: flex;
+  background-color: ${COLOR.secondary}
 `;
 
 const Header = styled.span`
@@ -61,7 +63,25 @@ const ViewMore = styled(ArrowRightOutlined)`
 `;
 
 function AdminArtist(props) {
+
+  const apiCall =async()=> {
+
+    const fetchData = await fetch('http://localhost:5001', {
+      method: 'POST',
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'Content-Type: application/json',
+      },
+      body: {name: "santhosh", password: "new 1234"},
+    });
+    //console.log(fetchData)
+  }
+  
+  // useEffect(()=>{
+  //   apiCall()
+  // ;})
   const { artistsList, onView } = props;
+  
   return (
     <ArtistListWrapper>
       {artistsList.map((artist, id) => (

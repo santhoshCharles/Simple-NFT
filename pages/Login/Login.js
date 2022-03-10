@@ -1,3 +1,4 @@
+import React,{useEffect} from 'react';
 import { Form, Input, Button, Checkbox } from "antd";
 import "antd/dist/antd.css";
 import Header from "../../component/Header";
@@ -5,6 +6,8 @@ import styled from "styled-components";
 import { success, error } from "../../component/Messages";
 import { useRouter } from 'next/router';
 import { ADMIN } from "../../constant/Constant";
+import { loginApi } from "../../store/action";
+import { useSelector, useDispatch, connect } from "react-redux";
  
 const LoginWrapper = styled.div`
   height: 100%;
@@ -12,30 +15,40 @@ const LoginWrapper = styled.div`
   align-items: center;
   display: flex;
   width: 100%;
-  margin-top: 15%;
 `;
 
-const Login = () => {
-    const router = useRouter()
+const Login = (props) => {
+  const router = useRouter()
+  const dispatch = useDispatch();
   const onFinish = (values) => {
-    console.log("Success:", values);
+    dispatch(loginApi({email: values.email, password: values.password }))
     //localStorage.setItem("admin", JSON.stringify(values));
-    if(values.email === ADMIN.email && values.password === ADMIN.password) {
-        success('Success')
-        router.push({ pathname: '/Dashboard',
-        query: { user: 'admin' }});
-    } else {
-        error('Error')
-    }
+    // if(values.email === ADMIN.email && values.password === ADMIN.password) {
+    //     success('Success')
+    //     router.push({ pathname: '/Dashboard',
+    //     query: { user: 'admin' }});
+    // } else {
+    //     error('Error')
+    // }
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
+  console.log('props', props);
+
+  useEffect(()=>{
+    console.log('seeffect', props.reducers, Object.keys(props.reducers.loginDetails))
+    if(Object.keys(props.reducers.loginDetails).length > 0) {
+           router.push({ pathname: '/Dashboard',
+        query: { user: 'admin' }});
+    }
+  }, [props.reducers.loginDetails])
+
   return (
     <>
-      <Header page={"Login"} >
+      <Header page={"Login"} windowheight={'100%'}>
       <LoginWrapper>
         <Form
           name="basic"
@@ -73,4 +86,8 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default  connect(mapStateToProps)(Login);

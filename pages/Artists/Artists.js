@@ -1,116 +1,78 @@
-import Header from "../../component/Header";
-import react, { useState, useEffect, useCallback } from "react";
-import { withRouter, useRouter } from "next/router";
-import { ADMIN } from "../../constant/Constant";
+import react, { useEffect, useCallback } from "react";
+import { useRouter } from "next/router";
 import AdminPage from "./AdminArtist";
-import styled from "styled-components";
-import ViewArtist from "../../component/ViewArtist";
-import { Pagination } from "antd";
+import SearchBox from "../../component/SearchBox";
+import PaginationRow from "../../component/Pagination";
+import CardRenderHOC from "../../component/CardRenderHOC";
+import { NO_OF_PAGE } from "../../constant/Constant";
+import { useSelector, useDispatch } from "react-redux";
+import { getArtistApi } from "../../store/action";
 
-const ArtistsList = [
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "Hervin", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "santhosh", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-  { UserName: "Manoj", Email: "san@gmail.com", WalletAddress: "vd4tfbf3" },
-  { UserName: "sam", Email: "san@gmail.com", WalletAddress: "jd04tfbf3" },
-  { UserName: "san", Email: "san@gmail.com", WalletAddress: "tdhtgbdef3" },
-  { UserName: "sant", Email: "san@gmail.com", WalletAddress: "edggthbfq" },
-];
-
-const ArtistsWrapper = styled.div`
-  width: 100%;
-  background-color: #f7f7f7;
-  margin: auto;
-`;
-const AdminWrapper = styled.div`
-  background-color: white;
-  margin-left: 5%;
-  margin-right: 5%;
-  height: 90vh;
-  padding: 2%;
-`;
-
-const PaginationWrapper = styled(Pagination)`
-  float: right;
-`
+let ArtistsList = [];
 
 function Artists(props) {
-  const route = useRouter();
-  const { router } = props;
-  const [artistsList, setArtistsList] = useState(ArtistsList);
-  const [currentPage, setCurrentPage] = useState(1);
-  // let startingInPage = 0;
-  // let endingInPage = 10;
+  const router = useRouter();
+  const storeArtistList = useSelector( state => state.reducers.artistList );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // totalPage = Math.ceil(ArtistsList.length / 10)
-    // console.log('tot', totalPage)
-  },[])
+    //apiCall();
+    if(storeArtistList.length === 0) {
+      dispatch(getArtistApi());
+    }
+    if(storeArtistList.length > 0 && props.dataList.length === 0) {
+      ArtistsList = [...storeArtistList];
+      props.setDataList(storeArtistList);
+    }
+  }, [storeArtistList]);
 
-  const onChangePage = useCallback((e) => {
-    //console.log(e);
-    setCurrentPage(e);
-  }, [currentPage])
+  const onChangePage = useCallback(
+    (e) => {
+      props.setCurrentPage(e);
+    },
+    [props.currentPage]
+  );
 
+  const searchArtist = (e) => {
+    console.log(e.target.value)
+    const { value } = e.target;
+    if (value !== "") {
+      const searchResult = ArtistsList.filter(
+        (artist) =>
+          artist.UserName.toUpperCase().includes(value.toUpperCase()) ||
+          artist.Email.toUpperCase().includes(value.toUpperCase())
+      );
+      console.log(searchResult)
+      props.setSearchText(value);
+      props.setDataList(searchResult);
+    } else {
+      props.setDataList(ArtistsList);
+      props.setSearchText('');
+    }
+     props.setCurrentPage(1);
+  };
 
-  const cpyArtistsList = [...artistsList];
+  const cpyArtistsList = [...props.dataList];
   let seletectPageList = [];
-  seletectPageList = cpyArtistsList.splice((currentPage - 1) * 10, 10);
+  seletectPageList = cpyArtistsList.splice((props.currentPage - 1) * NO_OF_PAGE, NO_OF_PAGE);
+
 
   return (
     <>
-      <Header page={router.route}>
-        <ArtistsWrapper>
-          <AdminWrapper>
-            {router.query.user === "admin" && (
-              <AdminPage
-                artistsList={seletectPageList}
-              />
-            )}
-            <PaginationWrapper current={currentPage} onChange={onChangePage} total={ArtistsList.length} defaultPageSize={10}/>
-          </AdminWrapper>
-        </ArtistsWrapper>
-        {/* {modelOpen && <ViewArtist/> } */}
-      </Header>
+    <h1>Artist List</h1>
+      <SearchBox searchList={searchArtist} searchText ={props.searchText} />
+      {router.query.user === "admin" && (
+        <AdminPage artistsList={seletectPageList} />
+      )}
+      <PaginationRow
+        currentPage={props.currentPage}
+        onChangePage={onChangePage}
+        total={
+          props.searchText === "" ? ArtistsList.length : props.dataList.length
+        }
+      />
     </>
   );
 }
 
-export default withRouter(Artists);
+export default CardRenderHOC(Artists);

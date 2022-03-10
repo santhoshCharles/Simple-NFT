@@ -1,0 +1,3 @@
+export const GET_ARTIST_LIST = "GET_ARTIST_LIST";
+export const GET_GENRES_LIST = "GET_GENRES_LIST";
+export const SET_LOGIN_DETAILS = "SET_LOGIN_DETAILS";

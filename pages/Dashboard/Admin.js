@@ -1,21 +1,19 @@
-import react from "react";
 import styled from "styled-components";
 import { Button } from "antd";
 import { PlusCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
-
-const AdminWrapper = styled.div`
-  background-color: white;
-  margin-left: 5%;
-  margin-right: 5%;
-  height: 90vh;
-  padding: 2%;
-`;
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getArtistApi, getGenresApi } from "../../store/action";
+import { COLOR } from "../../constant/Constant";
+import { useRouter } from "next/router";
 
 const Card = styled.div`
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
+  box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px,
+    rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
   width: 270px;
-  border-radius: 5px;
+  background-color: ${COLOR.secondary};
+  border-radius: 10px;
   //   &:hover {
   //     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   //   }
@@ -61,37 +59,60 @@ const ViewMore = styled(ArrowRightOutlined)`
 `;
 
 function Admin() {
+  const artistGenresList = useSelector((state) => state.reducers);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  useEffect(() => {
+    if (artistGenresList.artistList.length === 0) {
+      dispatch(getArtistApi());
+    }
+    if (artistGenresList.genresList.length === 0) {
+      dispatch(getGenresApi());
+    }
+  });
   return (
-    <AdminWrapper>
-      <CardWrapper>
-        <Card>
-          <CardHeader>
-            <b>Artists</b>
-          </CardHeader>
-          <CardBody>
-            <h1>40</h1>
-          </CardBody>
-          <ArtistsCardFooter>
-            <Button type="link">View Artists</Button>
-            <ViewMore />
-          </ArtistsCardFooter>
-        </Card>
-        <Card>
-          <CardHeader>
-            <b>Genres</b>
-          </CardHeader>
-          <CardBody>
-            <h1>20</h1>
-          </CardBody>
-          <CardFooter>
-            <PlusIcon />
-            <Button type="link">Add Genres</Button>
-            <CardFooterView type="link">View Genres</CardFooterView>
-            <ViewMore />
-          </CardFooter>
-        </Card>
-      </CardWrapper>
-    </AdminWrapper>
+    <CardWrapper>
+      <Card>
+        <CardHeader>
+          <b>Artists</b>
+        </CardHeader>
+        <CardBody>
+          <h1>{artistGenresList.artistList.length}</h1>
+        </CardBody>
+        <ArtistsCardFooter>
+          <Button
+            type="link"
+            onClick={() =>
+              router.push({ pathname: "/Artists", query: { user: "admin" } })
+            }
+          >
+            View Artists
+          </Button>
+          <ViewMore />
+        </ArtistsCardFooter>
+      </Card>
+      <Card>
+        <CardHeader>
+          <b>Genres</b>
+        </CardHeader>
+        <CardBody>
+          <h1>{artistGenresList.genresList.length}</h1>
+        </CardBody>
+        <CardFooter>
+          <PlusIcon />
+          <Button type="link">Add Genres</Button>
+          <CardFooterView
+            type="link"
+            onClick={() =>
+              router.push({ pathname: "/Genres", query: { user: "admin" } })
+            }
+          >
+            View Genres
+          </CardFooterView>
+          <ViewMore />
+        </CardFooter>
+      </Card>
+    </CardWrapper>
   );
 }
 

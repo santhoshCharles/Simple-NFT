@@ -6,6 +6,6 @@ export const success = (msg) => {
   message.success(msg);
 };
 
-export const error = (msg) => {
+export const errorFunction = (msg) => {
   message.error(msg);
 };

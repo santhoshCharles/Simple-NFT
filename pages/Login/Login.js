@@ -22,21 +22,12 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const onFinish = (values) => {
     dispatch(loginApi({email: values.email, password: values.password }))
-    //localStorage.setItem("admin", JSON.stringify(values));
-    // if(values.email === ADMIN.email && values.password === ADMIN.password) {
-    //     success('Success')
-    //     router.push({ pathname: '/Dashboard',
-    //     query: { user: 'admin' }});
-    // } else {
-    //     error('Error')
-    // }
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
-  console.log('props', props);
 
   useEffect(()=>{
     console.log('seeffect', props.reducers, Object.keys(props.reducers.loginDetails))

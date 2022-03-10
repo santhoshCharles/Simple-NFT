@@ -7,16 +7,6 @@ const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
-const validateMessages = {
-  required: '${label} is required!',
-  types: {
-    email: '${label} is not a valid email!',
-    number: '${label} is not a valid number!',
-  },
-  number: {
-    range: '${label} must be between ${min} and ${max}',
-  },
-};
 
 function EditProfile(props) {
   const dispatch = useDispatch();
@@ -55,11 +45,11 @@ function EditProfile(props) {
 
   return (
     <Modal title={header} visible={showModel} onOk={()=>{}} onCancel={closePopup} footer={null} getContainer={false}>
-    <Form {...layout} onFinish={onFinish} validateMessages={validateMessages} form={form} >
-      <Form.Item name='firstName' label="Title" rules={[{ required: true }]}>
+    <Form {...layout} onFinish={onFinish} form={form} >
+      <Form.Item name='firstName' label="Title" rules={[{ required: true,  message: "Please input your first name!"  }]}>
         <Input />
       </Form.Item>
-      <Form.Item name='lastName' label="Title" rules={[{ required: true }]}>
+      <Form.Item name='lastName' label="Title" rules={[{ required: true, message: "Please input your last name!" }]}>
         <Input />
       </Form.Item>
       <Form.Item

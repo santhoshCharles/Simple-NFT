@@ -34,7 +34,6 @@ function Artists(props) {
   );
 
   const searchArtist = (e) => {
-    console.log(e.target.value)
     const { value } = e.target;
     if (value !== "") {
       const searchResult = ArtistsList.filter(
@@ -42,7 +41,6 @@ function Artists(props) {
           artist.UserName.toUpperCase().includes(value.toUpperCase()) ||
           artist.Email.toUpperCase().includes(value.toUpperCase())
       );
-      console.log(searchResult)
       props.setSearchText(value);
       props.setDataList(searchResult);
     } else {

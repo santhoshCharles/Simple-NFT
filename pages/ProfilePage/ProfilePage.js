@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Header from "../../component/Header";
-import VerticalLine from "../../component/VerticalLine";
 import { useEffect, useState } from "react";
 import {
   TwitterOutlined,
@@ -85,7 +84,6 @@ const EditIcon = styled(EditOutlined)`
 `;
 
 function ProfilePage(props) {
-  console.log(props);
   const { loginDetails } = props.reducers;
   const [showModel, setShowModel] = useState(false);
   return (

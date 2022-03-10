@@ -46,7 +46,6 @@ function GenresList(props) {
       genresId = null;
       selectedGenres = {};
       GenresDataList = [...genresList];
-      console.log('useeffect', props)
       props.setDataList(genresList);
     }
     
@@ -67,7 +66,6 @@ function GenresList(props) {
       const searchResult = GenresDataList.filter((genres) =>
         genres.Title.toUpperCase().includes(value.toUpperCase())
       );
-      console.log('searchResult', searchResult, value)
       props.setDataList(searchResult);
     } else {
       props.setDataList(GenresDataList);
@@ -82,8 +80,6 @@ function GenresList(props) {
     (props.currentPage - 1) * NO_OF_PAGE,
     NO_OF_PAGE
   );
-
-  console.log('dataList', props.dataList, seletectPageList);
 
   const setGenresId = () => {
     genresId = props.dataList.length + 1;

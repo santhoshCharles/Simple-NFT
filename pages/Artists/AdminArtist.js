@@ -74,12 +74,8 @@ function AdminArtist(props) {
       },
       body: {name: "santhosh", password: "new 1234"},
     });
-    //console.log(fetchData)
   }
   
-  // useEffect(()=>{
-  //   apiCall()
-  // ;})
   const { artistsList, onView } = props;
   
   return (

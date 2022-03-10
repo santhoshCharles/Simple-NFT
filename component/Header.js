@@ -124,7 +124,7 @@ export default function Header(props) {
             <Link
                     href={{ pathname: "/ProfilePage", query: { user: "admin" } }}
                   >
-                  <UserIconWrapper onClick={()=>console.log('icon click')} >
+                  <UserIconWrapper >
               <UserIcon />
             </UserIconWrapper>
                   </Link>

@@ -22,7 +22,7 @@ function EditProfile(props) {
         lastName: selectedGenres.lastName,
       });
       form.setFieldsValue({
-        phone: selectedGenres.mobileNumber,
+        mobileNumber: selectedGenres.mobileNumber,
       });
       form.setFieldsValue({
         email: selectedGenres.email,
@@ -35,6 +35,7 @@ function EditProfile(props) {
       console.log('values', values)
       dispatch(editProfileApi(values));
       console.log(values)
+      props.closePopup();
     
   };
 
@@ -48,7 +49,7 @@ function EditProfile(props) {
         <Input />
       </Form.Item>
       <Form.Item
-        name="phone"
+        name="mobileNumber"
         label="Phone Number"
         rules={[{ required: true, message: 'Please input your phone number!' }]}
       >

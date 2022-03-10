@@ -79,18 +79,24 @@ const EditIcon = styled(EditOutlined)`
   position: absolute;
   top: 3%;
   right: 1%;
-  &:hover{
-      cursor: pointer
+  &:hover {
+    cursor: pointer;
   }
 `;
 
 function ProfilePage(props) {
-  const { loginDetails } = props.reducers;
+  //const { loginDetails } = props.reducers;
   const [showModel, setShowModel] = useState(false);
+  const [loginDetails, setLoginDetails] = useState({});
+  useEffect(() => {
+      console.log('useeffect', props.reducers)
+    setLoginDetails(props.reducers.loginDetails);
+  }, [props.reducers.loginDetails]);
+  console.log('props', props)
   return (
     <>
       <Header windowheight={"100%"}>
-          <h1>Profile Page</h1>
+        <h1>Profile Page</h1>
         <ProfileContainer>
           <ProfileCard>
             <NameCard>
@@ -100,7 +106,7 @@ function ProfilePage(props) {
             </NameCard>
             {/* <VerticalLine height={'95%'} width={'0.2%'} marginTop={'7px'} /> */}
             <DetailsCard>
-              <EditIcon onClick={()=>setShowModel(true) } />
+              <EditIcon onClick={() => setShowModel(true)} />
               <DetailsWrapper>
                 <HeaderText>Contact Number: </HeaderText>
                 <Value>{loginDetails.mobileNumber}</Value>
@@ -118,12 +124,12 @@ function ProfilePage(props) {
           </ProfileCard>
         </ProfileContainer>
         <EditProfile
-        header={"Edit Details"}
-        closePopup={()=>setShowModel(false)}
-        showModel={showModel}
-        selectedGenres={loginDetails}
-        saveDetails={(details)=>props.dispatch(editProfileApi(details))}
-      />
+          header={"Edit Details"}
+          closePopup={() => setShowModel(false)}
+          showModel={showModel}
+          selectedGenres={loginDetails}
+          saveDetails={(details) => props.dispatch(editProfileApi(details))}
+        />
       </Header>
     </>
   );

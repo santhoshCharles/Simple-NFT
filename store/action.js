@@ -4,7 +4,7 @@ import { BASE_LINK, API_URL } from "../constant/ApiLinks";
 import { success, errorFunction } from "../component/Messages";
 
 export const apiCallFunction =
-  (payload, type, apiLink, dispatchFunction) => async (dispatch, getState) => {
+  (payload, type, apiLink, dispatchFunction, succMessage) => async (dispatch, getState) => {
     console.log("data", payload, type, apiLink, dispatchFunction);
     switch (type) {
       case "POST":
@@ -12,7 +12,7 @@ export const apiCallFunction =
           .post(`${BASE_LINK}${apiLink}`, payload)
           .then((response) => {
             console.log(response);
-            success("Added successfully");
+            success(succMessage);
             dispatch(dispatchFunction(response.data));
           })
           .catch(function (error) {
@@ -33,7 +33,7 @@ export const apiCallFunction =
           .put(`${BASE_LINK}${apiLink}`, payload)
           .then((response) => {
             console.log(response);
-            success("Geners updated successfully");
+            success(succMessage);
             dispatch(dispatchFunction(response.data));
           })
           .catch(function (error) {
@@ -50,7 +50,7 @@ export const apiCallFunction =
           })
           .then((response) => {
             console.log(response);
-            success("Geners deleted successfully");
+            success(succMessage);
             dispatch(dispatchFunction(response.data));
           })
           .catch(function (error) {
@@ -61,28 +61,28 @@ export const apiCallFunction =
   };
 
 export const getArtistApi = () => async (dispatch, getState) =>
-  dispatch(apiCallFunction([], "GET", API_URL.getArtist, setArtistList));
+  dispatch(apiCallFunction([], "GET", API_URL.getArtist, setArtistList, ""));
 
 export const getGenresApi = () => async (dispatch, getState) =>
-  dispatch(apiCallFunction([], "GET", API_URL.getGenres, setGenresList));
+  dispatch(apiCallFunction([], "GET", API_URL.getGenres, setGenresList, ""));
 
 export const addGenersApi = (payload) => async (dispatch, getState) =>
-  dispatch(apiCallFunction(payload, "POST", API_URL.getGenres, setGenresList));
+  dispatch(apiCallFunction(payload, "POST", API_URL.getGenres, setGenresList, "Added successfully"));
 
 export const editGenersApi = (payload) => async (dispatch, getState) =>
-  dispatch(apiCallFunction(payload, "PUT", API_URL.getGenres, setGenresList));
+  dispatch(apiCallFunction(payload, "PUT", API_URL.getGenres, setGenresList, "Geners Updated successfully"));
 
 export const deleteGenersApi = (payload) => async (dispatch, getState) =>
   dispatch(
-    apiCallFunction(payload, "DELETE", API_URL.getGenres, setGenresList)
+    apiCallFunction(payload, "DELETE", API_URL.getGenres, setGenresList, "Deleted successfully")
   );
 
 export const loginApi = (payload) => async (dispatch, getState) =>
-  dispatch(apiCallFunction(payload, "POST", API_URL.login, setLoginDetails));
+  dispatch(apiCallFunction(payload, "POST", API_URL.login, setLoginDetails, "Access Granted"));
 
 export const editProfileApi = (payload) => async (dispatch, getState) =>
   dispatch(
-    apiCallFunction(payload, "POST", API_URL.editProfile, setUserDetails)
+    apiCallFunction(payload, "POST", API_URL.editProfile, setLoginDetails, "Profile Updated successfully")
   );
 
 export const setArtistList = (payload) => ({

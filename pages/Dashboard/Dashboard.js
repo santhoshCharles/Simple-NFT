@@ -24,7 +24,7 @@ function Dashboard(props) {
   return (
       <Header page={router.route} windowheight={'100%'}>
         { router.query.user === 'admin' && <AdminPage /> }
-        <Button type="primary" onClick={connectWalletPressed} >connect wallet</Button>
+        {/* <Button type="primary" onClick={connectWalletPressed} >connect wallet</Button> */}
       </Header>
   );
 }

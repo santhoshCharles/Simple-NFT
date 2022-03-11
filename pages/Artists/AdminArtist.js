@@ -4,6 +4,8 @@ import "antd/dist/antd.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { COLOR } from "../../constant/Constant";
+import { setUserDetails } from "../../store/action";
+import { useDispatch } from "react-redux";
 
 const ArtistListWrapper = styled.div`
   padding-left: 5%;
@@ -63,20 +65,9 @@ const ViewMore = styled(ArrowRightOutlined)`
 `;
 
 function AdminArtist(props) {
-
-  const apiCall =async()=> {
-
-    const fetchData = await fetch('http://localhost:5001', {
-      method: 'POST',
-      headers: {
-        'Accept': '*/*',
-        'Content-Type': 'Content-Type: application/json',
-      },
-      body: {name: "santhosh", password: "new 1234"},
-    });
-  }
   
-  const { artistsList, onView } = props;
+  const { artistsList } = props;
+  const dispatch = useDispatch();
   
   return (
     <ArtistListWrapper>
@@ -93,7 +84,7 @@ function AdminArtist(props) {
               <Value>{artist.WalletAddress}</Value>
             </WalletAddress>
           </LeftSideWrapper>
-          <RightSideWrapper>
+          <RightSideWrapper onClick={()=>localStorage.setItem('artist', JSON.stringify(artist))} >
             <Link href={`/Artists/${artist.UserName}`}>
               <a target="_blank">View</a>
             </Link>

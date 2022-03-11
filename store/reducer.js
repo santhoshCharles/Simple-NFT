@@ -5,6 +5,7 @@ const initializeStore = {
   artistList: [],
   genresList: [],
   loginDetails: {},
+  selectedUserDetails: {}
 };
 
 const reducer = (state = initializeStore, action) => {
@@ -15,6 +16,9 @@ const reducer = (state = initializeStore, action) => {
       return { ...state, genresList: action.payload };
     case type.SET_LOGIN_DETAILS:
       return { ...state, loginDetails: action.payload };
+    case type.SET_USER_DETAILS:
+      console.log('action', action)
+      return { ...state, selectedUserDetails: action.payload };
     default:
       return state;
   }

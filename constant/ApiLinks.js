@@ -1,10 +1,10 @@
 export const BASE_LINK = "http://localhost:5001/";
 
 export const API_URL = {
-    getArtist: "artistList",
+    getArtist: "artist/list",
     login: "login",
-    getGenres: "genresList",
+    getGenres: "genres/genresList",
     editProfile: "Profile",
-    searchArtist: "artistSearch"
+    searchArtist: "artist/search"
 }
 

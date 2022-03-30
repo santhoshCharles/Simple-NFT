@@ -4,6 +4,11 @@ import { Provider } from 'react-redux';
 
 function MyApp({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
+  let timerId = null;
+  Function.prototype.debounce = function() {
+    clearTimeout(timerId)
+    timerId = setTimeout(this, 200)
+  }
   return (<Provider store={store}>
     <Component {...pageProps} />
   </Provider>)

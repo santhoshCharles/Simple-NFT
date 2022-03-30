@@ -7,27 +7,35 @@ import CardRenderHOC from "../../component/CardRenderHOC";
 import { NO_OF_PAGE } from "../../constant/Constant";
 import { useSelector, useDispatch } from "react-redux";
 import { getArtistApi } from "../../store/action";
+import { apiCallWithoutRedux } from "../../store/ApiCall";
+import { API_URL } from "../../constant/ApiLinks";
 
 let ArtistsList = [];
+let serachTemp = false;
 
 function Artists(props) {
   const router = useRouter();
-  const storeArtistList = useSelector( state => state.reducers.artistList );
+  const storeArtistList = useSelector((state) => state.reducers.artistList);
+  const artistCount = useSelector((state) => state.reducers.artistCount);
   const dispatch = useDispatch();
+  const { dataList } = props;
 
   useEffect(() => {
     //apiCall();
-    if(storeArtistList.length === 0) {
-      dispatch(getArtistApi());
+    if (storeArtistList.length === 0) {
+      dispatch(getArtistApi({ pageNumber: props.currentPage }));
     }
-    if(storeArtistList.length > 0 && props.dataList.length === 0) {
+    console.log('useeffect')
+    if ((storeArtistList[0]?._id !== dataList[0]?._id) && !serachTemp) {
+      console.log('storeArtistList', storeArtistList,dataList, storeArtistList[0]?._id, dataList[0]?._id)
       ArtistsList = [...storeArtistList];
       props.setDataList(storeArtistList);
     }
-  }, [storeArtistList]);
+  }, storeArtistList);
 
   const onChangePage = useCallback(
     (e) => {
+      dispatch(getArtistApi({ pageNumber: e }));
       props.setCurrentPage(e);
     },
     [props.currentPage]
@@ -36,38 +44,39 @@ function Artists(props) {
   const searchArtist = (e) => {
     const { value } = e.target;
     if (value !== "") {
-      const searchResult = ArtistsList.filter(
-        (artist) =>
-          artist.UserName.toUpperCase().includes(value.toUpperCase()) ||
-          artist.Email.toUpperCase().includes(value.toUpperCase())
-      );
+      serachTemp = true;
+      const callApi = async () => {
+        const searchResult = await apiCallWithoutRedux(
+          { UserName: value },
+          "POST",
+          API_URL.searchArtist
+        );
+        console.log('searchResult', searchResult)
+        props.setDataList(searchResult);
+      };
+      callApi.debounce();
       props.setSearchText(value);
-      props.setDataList(searchResult);
     } else {
       props.setDataList(ArtistsList);
-      props.setSearchText('');
+      props.setSearchText("");
+      serachTemp = false;
     }
-     props.setCurrentPage(1);
+    props.setCurrentPage(1);
   };
 
-  const cpyArtistsList = [...props.dataList];
-  let seletectPageList = [];
-  seletectPageList = cpyArtistsList.splice((props.currentPage - 1) * NO_OF_PAGE, NO_OF_PAGE);
-
+  // const cpyArtistsList = [...props.dataList];
+  // let seletectPageList = [];
+  // seletectPageList = cpyArtistsList.splice((props.currentPage - 1) * NO_OF_PAGE, NO_OF_PAGE);
 
   return (
     <>
-    <h1>Artist List</h1>
-      <SearchBox searchList={searchArtist} searchText ={props.searchText} />
-      {router.query.user === "admin" && (
-        <AdminPage artistsList={seletectPageList} />
-      )}
+      <h1>Artist List</h1>
+      <SearchBox searchList={searchArtist} searchText={props.searchText} />
+      {router.query.user === "admin" && <AdminPage artistsList={dataList} />}
       <PaginationRow
         currentPage={props.currentPage}
         onChangePage={onChangePage}
-        total={
-          props.searchText === "" ? ArtistsList.length : props.dataList.length
-        }
+        total={artistCount}
       />
     </>
   );

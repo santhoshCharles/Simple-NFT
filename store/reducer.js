@@ -5,13 +5,15 @@ const initializeStore = {
   artistList: [],
   genresList: [],
   loginDetails: {},
-  selectedUserDetails: {}
+  selectedUserDetails: {},
+  artistCount: 0
 };
 
 const reducer = (state = initializeStore, action) => {
   switch (action.type) {
     case type.GET_ARTIST_LIST:
-      return { ...state, artistList: action.payload };
+      console.log('reducer', action)
+      return { ...state, artistList: action.payload.artistList, artistCount: action.payload.artistCount };
     case type.GET_GENRES_LIST:
       return { ...state, genresList: action.payload };
     case type.SET_LOGIN_DETAILS:

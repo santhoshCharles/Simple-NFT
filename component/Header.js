@@ -91,7 +91,6 @@ export default function Header(props) {
     height: ${props.windowheight ? props.windowheight : "auto"};
   `;
   const { page } = props;
-  console.log('loginDetails',userType, userTypee);
   return (
     <>
       <HeaderStyle>

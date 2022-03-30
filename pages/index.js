@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 
 export default function Home() {
   const router = useRouter()
-
   useEffect(() => {
+    console.log('useeffebt')
     router.push('/Login');
   }, [])
   return (

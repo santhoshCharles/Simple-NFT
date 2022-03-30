@@ -2,8 +2,8 @@ import * as types from "./types";
 import { API_URL } from "../constant/ApiLinks";
 import { apiCallFunction } from "./ApiCall";
 
-export const getArtistApi = () => async (dispatch, getState) =>
-  dispatch(apiCallFunction([], "GET", API_URL.getArtist, setArtistList, ""));
+export const getArtistApi = (payload) => async (dispatch, getState) =>
+  dispatch(apiCallFunction(payload, "POST", API_URL.getArtist, setArtistList, ""));
 
 export const getGenresApi = () => async (dispatch, getState) =>
   dispatch(apiCallFunction([], "GET", API_URL.getGenres, setGenresList, ""));

@@ -4,8 +4,7 @@ import { withRouter } from "next/router";
 import { ADMIN } from "../../constant/Constant";
 import AdminPage from "./Admin";
 import styled from "styled-components";
-import { Button } from "antd";
-import { connectWallet } from "../../utils/interact";
+import AuthorDashboard from "./AuthorDashboard";
 
 const DashboardWrapper = styled.div`
 width: 100%;
@@ -16,15 +15,15 @@ background-color: #f7f7f7;
 function Dashboard(props) {
   const { router } = props;
 
-  const connectWalletPressed = async () => {
-    const walletResponse = await connectWallet();
-   console.log('walletResponse', walletResponse)
-  };
+  // if(router.query.user === 'author') {
+  //   return(<AuthorDashboard/>)
+  // }
   
   return (
       <Header page={router.route} windowheight={'100%'}>
         { router.query.user === 'admin' && <AdminPage /> }
-        {/* <Button type="primary" onClick={connectWalletPressed} >connect wallet</Button> */}
+        { router.query.user === 'author' && <AuthorDashboard/>}
+        {/*  */}
       </Header>
   );
 }

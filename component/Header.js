@@ -1,9 +1,11 @@
-import react from "react";
+import react, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { UserOutlined } from "@ant-design/icons";
 import { COLOR } from "../constant/Constant";
 import { useSelector } from "react-redux";
+import { Button } from "antd";
+import { connectWallet } from "../web3/InitFunction";
 
 const HeaderStyle = styled.div`
 width: 100%;
@@ -76,12 +78,32 @@ const UserIconWrapper = styled.div`
   padding-left: 5px;
   &:hover {
     cursor: pointer;
-}
+  }
 `;
 
+const ConnectWallet = styled(Button) `
+  margin-top: 1.6%;
+  margin-right: 24px;
+`
+
 export default function Header(props) {
-  const userType = useSelector( state => state.reducers.loginDetails.type );
-  const userTypee = useSelector( state => state.reducers);
+  const userType = useSelector((state) => state.reducers.loginDetails.type);
+  const userTypee = useSelector((state) => state.reducers);
+  const [walletAddress, setWallet] = useState("");
+  const [status, setStatus] = useState(false);
+  const [name, setName] = useState("");
+
+  const connectWalletPressed = async () => {
+    try {
+      const walletResponse = await connectWallet();
+      console.log('walletResponse', walletResponse)
+      setStatus(true);
+      setWallet(walletResponse.address);
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
+
   const ComponentWrapper = styled.div`
     background-color: ${COLOR.Primary};
     margin-left: 5%;
@@ -124,13 +146,16 @@ export default function Header(props) {
                 </LI>
               </UL>
             </ULWrapper>
+            <ConnectWallet type="primary" onClick={connectWalletPressed}>
+              {status ? "Connected" : "Connect Wallet"}
+            </ConnectWallet>
             <Link
-                    href={{ pathname: "/ProfilePage", query: { user: userType } }}
-                  >
-                  <UserIconWrapper >
-              <UserIcon />
-            </UserIconWrapper>
-                  </Link>
+              href={{ pathname: "/ProfilePage", query: { user: userType } }}
+            >
+              <UserIconWrapper>
+                <UserIcon />
+              </UserIconWrapper>
+            </Link>
           </HeaderWrapper>
         )}
       </HeaderStyle>

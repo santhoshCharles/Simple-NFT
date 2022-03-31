@@ -27,13 +27,15 @@ const Login = (props) => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  const userType = useSelector((state) => state.reducers.loginDetails.type);
+
 
 
   useEffect(()=>{
     console.log('seeffect', props.reducers, Object.keys(props.reducers.loginDetails))
     if(Object.keys(props.reducers.loginDetails).length > 0) {
            router.push({ pathname: '/Dashboard',
-        query: { user: 'admin' }});
+        query: { user: userType }});
     }
   }, [props.reducers.loginDetails])
 

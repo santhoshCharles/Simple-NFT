@@ -34,7 +34,7 @@ function EditProfile(props) {
   
   const onFinish = (values) => {
       console.log('values', values)
-      dispatch(editProfileApi({...values, type: userType}));
+      dispatch(editProfileApi({payload:{...values, type: userType}, id: selectedGenres._id}));
       console.log(values)
       props.closePopup();
     

@@ -11,6 +11,8 @@ import { NO_OF_GENRES_PAGE } from "../../constant/Constant";
 import { Button } from "antd";
 import styled from "styled-components";
 import AddGeners from "../../component/AddGeners";
+import { apiCallWithoutRedux } from "../../store/ApiCall";
+import { API_URL } from "../../constant/ApiLinks";
 
 const FloatingButton = styled(Button)`
   position: fixed;
@@ -29,57 +31,68 @@ let GenresDataList = [];
 
 let genresId = null;
 
+let serachTemp = false;
+
 let selectedGenres = {};
 
 function GenresList(props) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [showModel, setShowModel] = useState(false);
+  const { currentPage, dataList } = props;
+  const { genresList = [], genresCount } = props.reducers;
 
   useEffect(() => {
     //apiCall();
-    const { genresList } = props.reducers;
-    if (genresList.length === 0) {
-      dispatch(getGenresApi());
+    console.log("useEffect");
+    if (genresList?.length === 0) {
+      dispatch(getGenresApi({ pageNumber: currentPage }));
     }
-    if (props.searchText === '' && genresList.length !== props.dataList.length || genresId !== null) {
+    if (
+      ((props.searchText === "" &&
+        genresList?.length !== props.dataList.length) ||
+      genresId !== null ||
+      (genresList[0]?._id !== dataList[0]?._id)) &&
+      !serachTemp
+    ) {
+      console.log('true', genresList)
       genresId = null;
       selectedGenres = {};
-      GenresDataList = [...genresList];
+      GenresDataList = genresList && [...genresList];
       props.setDataList(genresList);
     }
-    
   }, [props.reducers.genresList]);
 
   const onChangePage = useCallback(
     (e) => {
+      dispatch(getGenresApi({ pageNumber: e }));
       props.setCurrentPage(e);
     },
     [props.currentPage]
   );
 
   const searchGenres = (e) => {
-   
     const { value } = e.target;
-    console.log(value)
+    console.log(value);
     if (value !== "") {
-      const searchResult = GenresDataList.filter((genres) =>
-        genres.Title.toUpperCase().includes(value.toUpperCase())
-      );
-      props.setDataList(searchResult);
+      serachTemp = true;
+      const callApi = async () => {
+        const searchResult = await apiCallWithoutRedux(
+          { title: value },
+          "POST",
+          API_URL.searchgenres
+        );
+        console.log("searchResult", searchResult);
+        props.setDataList(searchResult);
+      };
+      callApi.debounce();
     } else {
+      serachTemp = false;
       props.setDataList(GenresDataList);
     }
     props.setCurrentPage(1);
     props.setSearchText(e.target.value);
   };
-
-  const cpyArtistsList = [...props.dataList];
-  let seletectPageList = [];
-  seletectPageList = cpyArtistsList.splice(
-    (props.currentPage - 1) * NO_OF_PAGE,
-    NO_OF_PAGE
-  );
 
   const setGenresId = () => {
     genresId = props.dataList.length + 1;
@@ -95,28 +108,30 @@ function GenresList(props) {
   const closeModel = () => {
     selectedGenres = {};
     setShowModel(false);
-  }
+  };
 
   const onDelete = (id) => {
-    dispatch(deleteGenersApi({id: id}))
-  }
+    dispatch(deleteGenersApi({ id: id }));
+  };
+
+  //console.log()
 
   return (
     <>
       <h1>Genres List</h1>
-      <SearchBox searchList={searchGenres} searchText ={props.searchText}/>
+      <SearchBox searchList={searchGenres} searchText={props.searchText} />
       {router.query.user === "admin" && (
-        <AdminGenres genresList={seletectPageList} onEdit={onEdit} onDelete={onDelete} />
+        <AdminGenres
+          genresList={dataList}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
       )}
       <PaginationRow
         currentPage={props.currentPage}
         onChangePage={onChangePage}
         onDelete={onDelete}
-        total={
-          props.searchText === ""
-            ? GenresDataList.length
-            : props.dataList.length
-        }
+        total={genresCount}
       />
       <FloatingButton
         type="primary"

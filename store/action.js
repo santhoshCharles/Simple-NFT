@@ -5,14 +5,14 @@ import { apiCallFunction } from "./ApiCall";
 export const getArtistApi = (payload) => async (dispatch, getState) =>
   dispatch(apiCallFunction(payload, "POST", API_URL.getArtist, setArtistList, ""));
 
-export const getGenresApi = () => async (dispatch, getState) =>
-  dispatch(apiCallFunction([], "GET", API_URL.getGenres, setGenresList, ""));
+export const getGenresApi = (payload) => async (dispatch, getState) =>
+  dispatch(apiCallFunction(payload, "POST", API_URL.getGenresList, setGenresList, ""));
 
 export const addGenersApi = (payload) => async (dispatch, getState) =>
   dispatch(apiCallFunction(payload, "POST", API_URL.getGenres, setGenresList, "Added successfully"));
 
-export const editGenersApi = (payload) => async (dispatch, getState) =>
-  dispatch(apiCallFunction(payload, "PUT", API_URL.getGenres, setGenresList, "Geners Updated successfully"));
+export const editGenersApi = (payload, id) => async (dispatch, getState) =>
+  dispatch(apiCallFunction({payload:payload, id: id}, "PUT", API_URL.getGenres, setGenresList, "Geners Updated successfully"));
 
 export const deleteGenersApi = (payload) => async (dispatch, getState) =>
   dispatch(

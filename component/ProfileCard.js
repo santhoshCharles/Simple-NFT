@@ -73,7 +73,7 @@ const EditIcon = styled(EditOutlined)`
 `;
 
 function ProfileCardUI(props) {
-  const { loginDetails, artistPage = false } = props;
+  const { loginDetails, artistPage = false, setShowModel } = props;
   return (
     <ProfileCard>
       <NameCard>

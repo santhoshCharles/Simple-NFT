@@ -26,9 +26,9 @@ function AddGeners(props) {
   
   const onFinish = (values) => {
     if(Object.keys(selectedGenres).length === 0) {
-      dispatch(addGenersApi({Title: values.name, des: values.introduction, id: genresId }));
+      dispatch(addGenersApi({Title: values.name, des: values.introduction }));
     } else {
-      dispatch(editGenersApi({Title: values.name, des: values.introduction, id: genresId }));
+      dispatch(editGenersApi({Title: values.name, des: values.introduction }, selectedGenres._id));
     }
     form.setFieldsValue({
       name: '',

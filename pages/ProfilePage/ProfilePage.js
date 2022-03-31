@@ -27,7 +27,7 @@ function ProfilePage(props) {
       <Header windowheight={"100%"}>
         <h1>Profile Page</h1>
         <ProfileContainer>
-          <ProfileCardUI loginDetails={loginDetails} />
+        <ProfileCardUI loginDetails={loginDetails} setShowModel={setShowModel} />
         </ProfileContainer>
         <EditProfile
           header={"Edit Details"}

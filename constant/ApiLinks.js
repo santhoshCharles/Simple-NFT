@@ -5,6 +5,8 @@ export const API_URL = {
     login: "login",
     getGenres: "genres/genresList",
     editProfile: "Profile",
-    searchArtist: "artist/search"
+    searchArtist: "artist/search",
+    searchgenres: "genres/search/genres",
+    getGenresList: "genres/list"
 }
 

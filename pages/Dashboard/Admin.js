@@ -63,10 +63,10 @@ function Admin() {
   const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
-    if (artistGenresList.artistList.length === 0) {
+    if (artistGenresList.artistCount === null) {
       dispatch(getArtistApi());
     }
-    if (artistGenresList.genresList.length === 0) {
+    if (artistGenresList.genresCount === null) {
       dispatch(getGenresApi());
     }
   });
@@ -77,7 +77,7 @@ function Admin() {
           <b>Artists</b>
         </CardHeader>
         <CardBody>
-          <h1>{artistGenresList.artistList.length}</h1>
+          <h1>{artistGenresList.artistCount}</h1>
         </CardBody>
         <ArtistsCardFooter>
           <Button
@@ -96,7 +96,7 @@ function Admin() {
           <b>Genres</b>
         </CardHeader>
         <CardBody>
-          <h1>{artistGenresList.genresList.length}</h1>
+          <h1>{artistGenresList.genresCount}</h1>
         </CardBody>
         <CardFooter>
           <PlusIcon />

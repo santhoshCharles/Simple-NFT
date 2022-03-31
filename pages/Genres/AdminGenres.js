@@ -36,7 +36,7 @@ height: 16px;
 `
 
 function AdminGenres(props) {
-  const { genresList } = props;
+  const { genresList = [] } = props;
   return (
     <CardWrapper>
       {genresList.map((genres, index) => (
@@ -54,7 +54,7 @@ function AdminGenres(props) {
             <VerticalList></VerticalList>
             <Button
               type="link"
-              onClick={()=>props.onDelete(genres.id)}
+              onClick={()=>props.onDelete(genres._id)}
             >
               Delete
             </Button>

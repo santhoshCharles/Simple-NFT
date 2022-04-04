@@ -2,10 +2,6 @@ import axios from "axios";
 import { useDebugValue } from "react";
 import { setNft } from "../store/action";
 
-const key = "11e4a2368a262bbd21b3";
-const secret =
-  "26de01678b8f178b014337914df9a2da4beb2a78ae7e33598b2f952e58fdc2b1";
-
 export const pinJSONToIPFS = async (JSONBody) => {
   const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
   //making axios POST request to Pinata ⬇️

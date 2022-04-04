@@ -44,7 +44,6 @@ function GenresList(props) {
 
   useEffect(() => {
     //apiCall();
-    console.log("useEffect");
     if (genresList?.length === 0) {
       dispatch(getGenresApi({ pageNumber: currentPage }));
     }
@@ -55,7 +54,6 @@ function GenresList(props) {
       (genresList[0]?._id !== dataList[0]?._id)) &&
       !serachTemp
     ) {
-      console.log('true', genresList)
       genresId = null;
       selectedGenres = {};
       GenresDataList = genresList && [...genresList];
@@ -73,7 +71,6 @@ function GenresList(props) {
 
   const searchGenres = (e) => {
     const { value } = e.target;
-    console.log(value);
     if (value !== "") {
       serachTemp = true;
       const callApi = async () => {
@@ -82,7 +79,6 @@ function GenresList(props) {
           "POST",
           API_URL.searchgenres
         );
-        console.log("searchResult", searchResult);
         props.setDataList(searchResult);
       };
       callApi.debounce();
@@ -114,17 +110,17 @@ function GenresList(props) {
     dispatch(deleteGenersApi({ id: id }));
   };
 
-  //console.log()
 
   return (
     <>
       <h1>Genres List</h1>
       <SearchBox searchList={searchGenres} searchText={props.searchText} />
-      {router.query.user === "admin" && (
+      {(router.query.user === "admin" || router.query.user === "author" ) && (
         <AdminGenres
           genresList={dataList}
           onEdit={onEdit}
           onDelete={onDelete}
+          user={router.query.user}
         />
       )}
       <PaginationRow
@@ -133,14 +129,14 @@ function GenresList(props) {
         onDelete={onDelete}
         total={genresCount}
       />
-      <FloatingButton
+     { router.query.user === "admin" && <FloatingButton
         type="primary"
         shape="circle"
         size="large"
         onClick={setGenresId}
       >
         +
-      </FloatingButton>
+      </FloatingButton> }
       <AddGeners
         header={"Add Geners"}
         closePopup={closeModel}

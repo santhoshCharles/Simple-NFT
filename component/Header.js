@@ -91,12 +91,11 @@ export default function Header(props) {
   const userTypee = useSelector((state) => state.reducers);
   const [walletAddress, setWallet] = useState("");
   const [status, setStatus] = useState(false);
-  const [name, setName] = useState("");
+  const [user, setuser] = useState(userType);
 
   const connectWalletPressed = async () => {
     try {
       const walletResponse = await connectWallet();
-      console.log('walletResponse', walletResponse)
       setStatus(true);
       setWallet(walletResponse.address);
     } catch (err) {
@@ -122,7 +121,7 @@ export default function Header(props) {
               <UL>
                 <LI>
                   <Link
-                    href={{ pathname: "/Dashboard", query: { user: userType } }}
+                    href={{ pathname: "/Dashboard", query: { user: user } }}
                   >
                     <Atag sty>Dashboard</Atag>
                   </Link>
@@ -130,7 +129,7 @@ export default function Header(props) {
                 </LI>
                 <LI>
                   <Link
-                    href={{ pathname: "/Artists", query: { user: userType } }}
+                    href={{ pathname: "/Artists", query: { user: user } }}
                   >
                     <Atag>Artists</Atag>
                   </Link>
@@ -138,7 +137,7 @@ export default function Header(props) {
                 </LI>
                 <LI>
                   <Link
-                    href={{ pathname: "/Genres", query: { user: userType } }}
+                    href={{ pathname: "/Genres", query: { user: user } }}
                   >
                     <Atag>Genres</Atag>
                   </Link>
@@ -150,7 +149,7 @@ export default function Header(props) {
               {status ? "Connected" : "Connect Wallet"}
             </ConnectWallet>
             <Link
-              href={{ pathname: "/ProfilePage", query: { user: userType } }}
+              href={{ pathname: "/ProfilePage", query: { user: user } }}
             >
               <UserIconWrapper>
                 <UserIcon />

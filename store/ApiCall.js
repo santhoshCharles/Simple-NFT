@@ -5,7 +5,6 @@ import { success, errorFunction } from "../component/Messages";
 export const apiCallFunction =
   (payload, type, apiLink, dispatchFunction, succMessage) =>
   async (dispatch, getState) => {
-    console.log("data", payload, type, apiLink, dispatchFunction);
     switch (type) {
       case "POST":
         axios

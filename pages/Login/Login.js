@@ -32,7 +32,6 @@ const Login = (props) => {
 
 
   useEffect(()=>{
-    console.log('seeffect', props.reducers, Object.keys(props.reducers.loginDetails))
     if(Object.keys(props.reducers.loginDetails).length > 0) {
            router.push({ pathname: '/Dashboard',
         query: { user: userType }});

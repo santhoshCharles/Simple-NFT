@@ -4,6 +4,7 @@ import { mintNFT, loadContract } from "../../web3/interact";
 import { getPinatadata } from "../../utils/pinata";
 import styled from "styled-components";
 import CreateNFT from "../../component/CreateNFT";
+import { useSelector, useDispatch } from "react-redux";
 
 const CreateNFTButton = styled(Button)`
     margin: 16px
@@ -18,29 +19,34 @@ const NFTWrapper = styled.div`
 const { Meta } = Card;
 
 function AuthorDashboard() {
-  const[NFT, setNFT] = useState([]);
+  const[NFT, setNFTs] = useState([]);
   const [showModel, setShowModel ] = useState(false);
+  const dispatch = useDispatch();
+  const userType = useSelector((state) => state.reducers);
+  const nft = useSelector((state) => state.reducers.nft);
 
   useEffect(() => {
     loadContract();
-    getPinataData();
-  },[]);
+    if(nft.length > 0) {
+      setNFTs(nft);
+    }
+    else {
+      getPinataData();
+    }
+  },[userType, nft]);
 
-  const getPinataData = async () => {
-    const data = await getPinatadata();
-    setNFT(data);
-    console.log("data", data);
+  const getPinataData =  () => {
+
+    dispatch(getPinatadata());
   };
 
-  const onMintPressed = async () => {
-    console.log("onMintPressed");
-    const { status } = await mintNFT(
-      "https://yourimageshare.com/ib/h42xmxuH2Z.jpg",
-      "MT 15 Blue",
-      "MT 15 Blue color, 155cc, 1.8lak"
-    );
-    console.log("status", status);
+  const onMintPressed = async (data) => {
+    const { status } = await mintNFT({...data});
   };
+
+  const submitForm = (data) => {
+
+  }
 
   return (
     <div>
@@ -55,18 +61,19 @@ function AuthorDashboard() {
             cover={
               <img
                 alt="example"
-                src={NFTData.value.data.image}
+                src={NFTData.value.data.title.imageUrl}
                 height={200}
                 width={200}
               />
             }
           >
-            <Meta title={NFTData.value.data.name} description={NFTData.value.data.description} />
+            <Meta title={NFTData.value.data.title.title} description={NFTData.value.data.title.description} />
+            <div>{NFTData.value.data.title.userName}</div>
           </Card>
         ))}
         ,
       </NFTWrapper>
-      <CreateNFT showModel={showModel} closePopup={()=>setShowModel(false)} />
+      <CreateNFT showModel={showModel} closePopup={()=>setShowModel(false)} onMintPressed={onMintPressed} />
     </div>
   );
 }

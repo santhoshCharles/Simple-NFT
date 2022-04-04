@@ -25,9 +25,7 @@ function Artists(props) {
     if (storeArtistList.length === 0) {
       dispatch(getArtistApi({ pageNumber: props.currentPage }));
     }
-    console.log('useeffect')
     if ((storeArtistList[0]?._id !== dataList[0]?._id) && !serachTemp) {
-      console.log('storeArtistList', storeArtistList,dataList, storeArtistList[0]?._id, dataList[0]?._id)
       ArtistsList = [...storeArtistList];
       props.setDataList(storeArtistList);
     }
@@ -51,7 +49,6 @@ function Artists(props) {
           "POST",
           API_URL.searchArtist
         );
-        console.log('searchResult', searchResult)
         props.setDataList(searchResult);
       };
       callApi.debounce();
@@ -72,7 +69,7 @@ function Artists(props) {
     <>
       <h1>Artist List</h1>
       <SearchBox searchList={searchArtist} searchText={props.searchText} />
-      {router.query.user === "admin" && <AdminPage artistsList={dataList} />}
+      {router.query.user === "admin" || router.query.user === "author"  && <AdminPage artistsList={dataList} />}
       <PaginationRow
         currentPage={props.currentPage}
         onChangePage={onChangePage}

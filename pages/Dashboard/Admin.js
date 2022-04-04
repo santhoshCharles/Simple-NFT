@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { PlusCircleOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getArtistApi, getGenresApi } from "../../store/action";
+import { getArtistCountApi, getGenresCountApi } from "../../store/action";
 import { COLOR } from "../../constant/Constant";
 import { useRouter } from "next/router";
 
@@ -64,10 +64,10 @@ function Admin() {
   const router = useRouter();
   useEffect(() => {
     if (artistGenresList.artistCount === null) {
-      dispatch(getArtistApi());
+      dispatch(getArtistCountApi());
     }
     if (artistGenresList.genresCount === null) {
-      dispatch(getGenresApi());
+      dispatch(getGenresCountApi());
     }
   });
   return (

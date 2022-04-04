@@ -7,21 +7,26 @@ const initializeStore = {
   loginDetails: {},
   selectedUserDetails: {},
   artistCount: null,
-  genresCount: null
+  genresCount: null,
+  nft:[]
 };
 
 const reducer = (state = initializeStore, action) => {
   switch (action.type) {
     case type.GET_ARTIST_LIST:
-      console.log('reducer', action)
-      return { ...state, artistList: action.payload.artistList, artistCount: action.payload.artistCount };
+      return { ...state, artistList: action.payload };
     case type.GET_GENRES_LIST:
-      return { ...state, genresList: action.payload.genresList, genresCount: action.payload.genresCount};
+      return { ...state, genresList: action.payload };
     case type.SET_LOGIN_DETAILS:
       return { ...state, loginDetails: action.payload };
     case type.SET_USER_DETAILS:
-      console.log('action', action)
       return { ...state, selectedUserDetails: action.payload };
+    case type.GET_ARTIST_COUNT:
+      return { ...state, artistCount: action.payload.artistCount };
+    case type.GET_GENRES_COUNT:
+      return { ...state, genresCount: action.payload.genresCount };
+    case type.SET_NFT:
+      return { ...state, nft: action.payload };
     default:
       return state;
   }

@@ -11,11 +11,11 @@ const layout = {
 function CreateNFT(props) {
   //const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const { selectedGenres, genresId, header, showModel, closePopup } = props;
+  const { selectedGenres, genresId, header, showModel, closePopup, onMintPressed } = props;
   const userType = useSelector( state => state.reducers.loginDetails );
 
   const onFinish = (values) => {
-    console.log("values", values, userType);
+    onMintPressed({...values, userType: userType.type, userName: userType.userName, email: userType.email });
   };
 
   return (

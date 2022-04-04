@@ -74,18 +74,18 @@ function AdminArtist(props) {
       {artistsList.map((artist, id) => (
         <Card key={id}>
           <LeftSideWrapper>
-            <UserName>{artist.UserName}</UserName>
+            <UserName>{artist.userName}</UserName>
             <>
               <Header>Email:</Header>
-              <Value>{artist.Email}</Value>
+              <Value>{artist.email}</Value>
             </>
             <WalletAddress>
               <Header>Wallet Address:</Header>
-              <Value>{artist.WalletAddress}</Value>
+              <Value>{artist.walletAddress}</Value>
             </WalletAddress>
           </LeftSideWrapper>
           <RightSideWrapper onClick={()=>localStorage.setItem('artist', JSON.stringify(artist))} >
-            <Link href={`/Artists/${artist.UserName}`}>
+            <Link href={`/Artists/${artist.userName}`}>
               <a target="_blank">View</a>
             </Link>
             <ViewMore />

@@ -27,8 +27,19 @@ export const editProfileApi = (payload) => async (dispatch, getState) =>
     apiCallFunction(payload, "POST", API_URL.editProfile, setLoginDetails, "Profile Updated successfully")
   );
 
+  export const getArtistCountApi = () => async (dispatch, getState) =>
+  dispatch(apiCallFunction([], "GET", API_URL.artistCount, setArtistCount, ""));
+
+export const getGenresCountApi = () => async (dispatch, getState) => 
+  dispatch( apiCallFunction([], "GET", API_URL.genresCount, setGenresCount, "") );
+
 export const setArtistList = (payload) => ({
   type: types.GET_ARTIST_LIST,
+  payload: payload,
+});
+
+export const setArtistCount = (payload) => ({
+  type: types.GET_ARTIST_COUNT,
   payload: payload,
 });
 
@@ -46,3 +57,13 @@ export const setUserDetails = (payload) => ({
   type: types.SET_USER_DETAILS,
   payload: payload,
 });
+
+export const setGenresCount = (payload) => ({
+  type: types.GET_GENRES_COUNT,
+  payload: payload
+})
+
+export const setNft = (payload) => ({
+  type: types.SET_NFT,
+  payload: payload
+})

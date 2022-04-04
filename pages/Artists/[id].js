@@ -10,13 +10,11 @@ const DetailsWrapper = styled.div`
 //let artistDetails = null;
 
 function Artist(props) {
-  //console.log('selected artist', props, userDetails, state)
   const [artistDetails, setArtistDetails] = useState({});
   useEffect(() => {
     //artistDetails =
     setArtistDetails(JSON.parse(localStorage.getItem("artist")));
   }, []);
-  console.log("artistDetails", artistDetails);
   const { Email, UserName, WalletAddress } = artistDetails;
   return (
     <Header windowheight={"100%"}>

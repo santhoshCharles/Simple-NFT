@@ -36,7 +36,7 @@ height: 16px;
 `
 
 function AdminGenres(props) {
-  const { genresList = [] } = props;
+  const { genresList = [], user } = props;
   return (
     <CardWrapper>
       {genresList.map((genres, index) => (
@@ -44,7 +44,7 @@ function AdminGenres(props) {
           <SmallCard>
             <h2>{genres.Title}</h2>
             <Description>{genres.des}</Description>
-            <ActionButtonWrapper>
+            { user === "admin" && <ActionButtonWrapper>
             <Button
               type="link"
               onClick={()=>props.onEdit(index)}
@@ -58,7 +58,7 @@ function AdminGenres(props) {
             >
               Delete
             </Button>
-          </ActionButtonWrapper>
+          </ActionButtonWrapper>}
           </SmallCard>
         </>
       ))}

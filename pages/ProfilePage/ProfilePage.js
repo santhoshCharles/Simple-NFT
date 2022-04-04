@@ -18,10 +18,8 @@ function ProfilePage(props) {
   const [showModel, setShowModel] = useState(false);
   const [loginDetails, setLoginDetails] = useState({});
   useEffect(() => {
-    console.log("useeffect", props.reducers);
     setLoginDetails(props.reducers.loginDetails);
   }, [props.reducers.loginDetails]);
-  console.log("props", props);
   return (
     <>
       <Header windowheight={"100%"}>

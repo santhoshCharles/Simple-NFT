@@ -28,14 +28,15 @@ function EditProfile(props) {
       form.setFieldsValue({
         email: selectedGenres.email,
       });
+      form.setFieldsValue({
+        userName: selectedGenres.userName,
+      });
     }
     
   },[props]);
   
   const onFinish = (values) => {
-      console.log('values', values)
       dispatch(editProfileApi({payload:{...values, type: userType}, id: selectedGenres._id}));
-      console.log(values)
       props.closePopup();
     
   };
@@ -56,9 +57,12 @@ function EditProfile(props) {
       >
         <Input style={{ width: '100%' }} />
       </Form.Item>
-      <Form.Item disabled name='email' label="Email">
+      <Form.Item disabled={ userType === "author" ? true : false} name='email' label="Email">
         <Input  disabled={true} />
       </Form.Item>
+      { selectedGenres.genres && <Form.Item name='userName' label="User Name">
+        <Input />
+      </Form.Item>}
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 20 }}>
         <Button type="primary" htmlType="submit">
           Submit

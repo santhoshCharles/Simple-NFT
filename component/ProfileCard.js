@@ -72,6 +72,13 @@ const EditIcon = styled(EditOutlined)`
   }
 `;
 
+const UserNameStyle = styled.div`
+  font-size: 14px;
+  margin-top: -18px;
+    color: #1890ff;
+
+`
+
 function ProfileCardUI(props) {
   const { loginDetails, artistPage = false, setShowModel } = props;
   return (
@@ -81,6 +88,8 @@ function ProfileCardUI(props) {
           {loginDetails?.firstName && loginDetails.firstName}{" "}
           {loginDetails?.lastName && loginDetails.lastName}
         </h1>
+        { loginDetails.userName && <UserNameStyle>@{loginDetails.userName}</UserNameStyle> }
+        { loginDetails.genres && loginDetails.genres.map( genres => <span>{genres} | </span> ) }
       </NameCard>
       {/* <VerticalLine height={'95%'} width={'0.2%'} marginTop={'7px'} /> */}
       <DetailsCard>

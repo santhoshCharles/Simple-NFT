@@ -2,3 +2,6 @@ export const GET_ARTIST_LIST = "GET_ARTIST_LIST";
 export const GET_GENRES_LIST = "GET_GENRES_LIST";
 export const SET_LOGIN_DETAILS = "SET_LOGIN_DETAILS";
 export const SET_USER_DETAILS = "SET_USER_DETAILS";
+export const GET_ARTIST_COUNT = "GET_ARTIST_COUNT";
+export const GET_GENRES_COUNT = "GET_GENRES_COUNT";
+export const SET_NFT = "SET_NFT";

@@ -55,19 +55,18 @@ export const getCurrentWalletConnected = async () => {
     return new web3.eth.Contract(contractABI, contractAddress);
   }
   
-  export const mintNFT = async (url, name, description) => {
-    if (url.trim() == "" || name.trim() == "" || description.trim() == "") {
-      return {
-        success: false,
-        status: "❗Please make sure all fields are completed before minting.",
-      };
-    }
-  
-    //make metadata
+  export const mintNFT = async (title, description, price, imageUrl, userType, userName, email) => {
+    
     const metadata = new Object();
-    metadata.name = name;
-    metadata.image = url;
+    metadata.title = title;
+    metadata.imageUrl = imageUrl;
     metadata.description = description;
+    metadata.userType = userType;
+    metadata.price = price;
+    metadata.userName = userName;
+    metadata.email = email;
+    metadata.updated = Date.now();
+
   
     const pinataResponse = await pinJSONToIPFS(metadata);
     if (!pinataResponse.success) {
@@ -79,7 +78,6 @@ export const getCurrentWalletConnected = async () => {
     const tokenURI = pinataResponse.pinataUrl;
   
     window.contract = await new web3.eth.Contract(contractABI, contractAddress);
-  console.log('window.ethereum.selectedAddress', window.ethereum.selectedAddress)
     const transactionParameters = {
       to: contractAddress, // Required except during contract publications.
       from: window.ethereum.selectedAddress, // must match user's active address.

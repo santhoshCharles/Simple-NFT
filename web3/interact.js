@@ -1,10 +1,13 @@
 import { pinJSONToIPFS } from "../utils/pinata";
 import contractABI from "../Contract/Contract.json";
+import { ALCHEMY_KEY, CONTRACT_ADDRESS } from "../constant/ConfigKey";
 
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
+const alchemyKey = ALCHEMY_KEY;
 const web3 = createAlchemyWeb3(alchemyKey);
 
-//const contractABI = require("../contract-abi.json");
+const contractAddress = CONTRACT_ADDRESS;
+
 
 export const getCurrentWalletConnected = async () => {
     if (window.ethereum) {

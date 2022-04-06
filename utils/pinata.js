@@ -1,6 +1,13 @@
 import axios from "axios";
 import { useDebugValue } from "react";
 import { setNft } from "../store/action";
+import { PINATA_KEY, PINATA_SECRET_KEY } from "../constant/ConfigKey";
+//import 'dotenv/config'
+
+const key = PINATA_KEY;
+const secret = PINATA_SECRET_KEY;
+
+console.log('key', key, secret);
 
 export const pinJSONToIPFS = async (JSONBody) => {
   const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;

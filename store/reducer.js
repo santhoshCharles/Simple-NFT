@@ -8,7 +8,9 @@ const initializeStore = {
   selectedUserDetails: {},
   artistCount: null,
   genresCount: null,
-  nft:[]
+  nft: [],
+  token: null,
+  refreshToken: null,
 };
 
 const reducer = (state = initializeStore, action) => {
@@ -18,7 +20,12 @@ const reducer = (state = initializeStore, action) => {
     case type.GET_GENRES_LIST:
       return { ...state, genresList: action.payload };
     case type.SET_LOGIN_DETAILS:
-      return { ...state, loginDetails: action.payload };
+      return {
+        ...state,
+        loginDetails: action.payload.usersDetails,
+        token: action.payload.token,
+        refreshToken: action.payload.refreshToken,
+      };
     case type.SET_USER_DETAILS:
       return { ...state, selectedUserDetails: action.payload };
     case type.GET_ARTIST_COUNT:

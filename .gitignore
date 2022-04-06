@@ -33,3 +33,5 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+/constant/ConfigKey.js

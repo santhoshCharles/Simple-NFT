@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { UserOutlined } from "@ant-design/icons";
@@ -11,6 +11,8 @@ const HeaderStyle = styled.div`
 width: 100%;
 height: 90px;
 background-color: #348f6c;
+display: flex;
+justify-content: flex-end;
 }`;
 
 const UL = styled.ul`
@@ -76,22 +78,24 @@ const UserIconWrapper = styled.div`
   margin-top: 25px;
   padding-top: 8px;
   padding-left: 5px;
+  margin-right: 10px
   &:hover {
     cursor: pointer;
   }
 `;
 
-const ConnectWallet = styled(Button) `
+const ConnectWallet = styled(Button)`
   margin-top: 1.6%;
   margin-right: 24px;
-`
+  float: right;
+`;
 
 export default function Header(props) {
   const userType = useSelector((state) => state.reducers.loginDetails.type);
   const userTypee = useSelector((state) => state.reducers);
   const [walletAddress, setWallet] = useState("");
   const [status, setStatus] = useState(false);
-  const [user, setuser] = useState(userType);
+  const [user, setUser] = useState(userType);
 
   const connectWalletPressed = async () => {
     try {
@@ -112,6 +116,11 @@ export default function Header(props) {
     height: ${props.windowheight ? props.windowheight : "auto"};
   `;
   const { page } = props;
+
+  useEffect(() => {
+    setUser(userType);
+  }, [userType]);
+
   return (
     <>
       <HeaderStyle>
@@ -128,34 +137,30 @@ export default function Header(props) {
                   <BottomBorder />
                 </LI>
                 <LI>
-                  <Link
-                    href={{ pathname: "/Artists", query: { user: user } }}
-                  >
+                  <Link href={{ pathname: "/Artists", query: { user: user } }}>
                     <Atag>Artists</Atag>
                   </Link>
                   <BottomBorder />
                 </LI>
                 <LI>
-                  <Link
-                    href={{ pathname: "/Genres", query: { user: user } }}
-                  >
+                  <Link href={{ pathname: "/Genres", query: { user: user } }}>
                     <Atag>Genres</Atag>
                   </Link>
                   <BottomBorder />
                 </LI>
               </UL>
             </ULWrapper>
-            <ConnectWallet type="primary" onClick={connectWalletPressed}>
-              {status ? "Connected" : "Connect Wallet"}
-            </ConnectWallet>
-            <Link
-              href={{ pathname: "/ProfilePage", query: { user: user } }}
-            >
-              <UserIconWrapper>
-                <UserIcon />
-              </UserIconWrapper>
-            </Link>
           </HeaderWrapper>
+        )}
+        <ConnectWallet type="primary" onClick={connectWalletPressed}>
+          {status ? "Connected" : "Connect Wallet"}
+        </ConnectWallet>
+        {page !== "Login" && (
+          <Link href={{ pathname: "/ProfilePage", query: { user: user } }}>
+            <UserIconWrapper>
+              <UserIcon />
+            </UserIconWrapper>
+          </Link>
         )}
       </HeaderStyle>
       <PageWrapper>

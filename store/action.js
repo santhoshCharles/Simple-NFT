@@ -33,6 +33,9 @@ export const editProfileApi = (payload) => async (dispatch, getState) =>
 export const getGenresCountApi = () => async (dispatch, getState) => 
   dispatch( apiCallFunction([], "GET", API_URL.genresCount, setGenresCount, "") );
 
+export const getUserDetails = () => async (dispatch, getState) =>
+  dispatch(apiCallFunction([], "POST", API_URL.getUserDetails, setLoginDetails, ""));
+
 export const setArtistList = (payload) => ({
   type: types.GET_ARTIST_LIST,
   payload: payload,

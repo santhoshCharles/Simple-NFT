@@ -9,6 +9,8 @@ export const API_URL = {
     getGenresList: "genres/list",
     editProfile: "user/edit",
     artistCount: "artist/count",
-    genresCount: "genres/count"
+    genresCount: "genres/count",
+    getUserDetails: "user/details",
+    getNewToken: "login/newToken"
 }
 

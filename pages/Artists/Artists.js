@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getArtistApi } from "../../store/action";
 import { apiCallWithoutRedux } from "../../store/ApiCall";
 import { API_URL } from "../../constant/ApiLinks";
+import { setMemoization, MemoizationType, memoizationState } from "../../utils/memoization";
 
 let ArtistsList = [];
 let serachTemp = false;
@@ -18,14 +19,14 @@ function Artists(props) {
   const storeArtistList = useSelector((state) => state.reducers.artistList);
   const artistCount = useSelector((state) => state.reducers.artistCount);
   const dispatch = useDispatch();
-  const { dataList } = props;
+  const { dataList, artistInitialList } = props;
 
   useEffect(() => {
-    //apiCall();
-    if (storeArtistList.length === 0) {
-      dispatch(getArtistApi({ pageNumber: props.currentPage }));
+    if (dataList.length === 0) {
+      props.setDataList(artistInitialList);
+
     }
-    if ((storeArtistList[0]?._id !== dataList[0]?._id) && !serachTemp) {
+    if (storeArtistList.length !== 0 && (storeArtistList[0]?._id !== dataList[0]?._id) && !serachTemp) {
       ArtistsList = [...storeArtistList];
       props.setDataList(storeArtistList);
     }
@@ -33,7 +34,11 @@ function Artists(props) {
 
   const onChangePage = useCallback(
     (e) => {
-      dispatch(getArtistApi({ pageNumber: e }));
+      if(memoizationState.artistPaginationResult[e] && memoizationState.artistPaginationResult[e].length !== 0) {
+        props.setDataList(memoizationState.searchArtist[e]);
+      } else {
+        dispatch(getArtistApi({ pageNumber: e }));
+      }
       props.setCurrentPage(e);
     },
     [props.currentPage]
@@ -49,9 +54,14 @@ function Artists(props) {
           "POST",
           API_URL.searchArtist
         );
+        setMemoization(MemoizationType.SET_ARTIST_SEARCH_RESULT, searchResult, value);
         props.setDataList(searchResult);
       };
-      callApi.debounce();
+      if(memoizationState.searchArtist[value] && memoizationState.searchArtist[value]?.length !== 0) {
+        props.setDataList(memoizationState.searchArtist[value]);
+      } else {
+        callApi.debounce();
+      }
       props.setSearchText(value);
     } else {
       props.setDataList(ArtistsList);
@@ -61,15 +71,11 @@ function Artists(props) {
     props.setCurrentPage(1);
   };
 
-  // const cpyArtistsList = [...props.dataList];
-  // let seletectPageList = [];
-  // seletectPageList = cpyArtistsList.splice((props.currentPage - 1) * NO_OF_PAGE, NO_OF_PAGE);
-
   return (
     <>
       <h1>Artist List</h1>
       <SearchBox searchList={searchArtist} searchText={props.searchText} />
-      {router.query.user === "admin" || router.query.user === "author"  && <AdminPage artistsList={dataList} />}
+      { (router.query.user === "admin" || router.query.user === "author")  && <AdminPage artistsList={dataList} />}
       <PaginationRow
         currentPage={props.currentPage}
         onChangePage={onChangePage}

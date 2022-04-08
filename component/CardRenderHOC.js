@@ -4,7 +4,7 @@ import Header from "./Header";
 import PaginationRow from "./Pagination";
 import SearchBox from "./SearchBox";
 
-const CardRenderHOC = (WrappedComponent) => (props) => {
+const CardRenderHOC = (WrappedComponent) => ({artistInitialList, genresInitialList}) => {
   const [artistsList, setArtistsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
@@ -18,6 +18,8 @@ const CardRenderHOC = (WrappedComponent) => (props) => {
         setDataList={setArtistsList}
         setCurrentPage={setCurrentPage}
         setSearchText={setSearchText}
+        artistInitialList={artistInitialList}
+        genresInitialList={genresInitialList}
       />
     </Header>
   );

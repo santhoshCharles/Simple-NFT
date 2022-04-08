@@ -39,16 +39,17 @@ function GenresList(props) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [showModel, setShowModel] = useState(false);
-  const { currentPage, dataList } = props;
+  const { currentPage, dataList, genresInitialList } = props;
   const { genresList = [], genresCount } = props.reducers;
 
   useEffect(() => {
     //apiCall();
-    if (genresList?.length === 0) {
-      dispatch(getGenresApi({ pageNumber: currentPage }));
+
+    if (dataList.length === 0) {
+      props.setDataList(genresInitialList);
     }
     if (
-      ((props.searchText === "" &&
+      genresList.length !== 0 && ((props.searchText === "" &&
         genresList?.length !== props.dataList.length) ||
       genresId !== null ||
       (genresList[0]?._id !== dataList[0]?._id)) &&

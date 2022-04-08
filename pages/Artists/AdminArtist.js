@@ -68,7 +68,7 @@ function AdminArtist(props) {
   
   const { artistsList } = props;
   const dispatch = useDispatch();
-  
+  console.log('storeArtistList', props);
   return (
     <ArtistListWrapper>
       {artistsList.map((artist, id) => (

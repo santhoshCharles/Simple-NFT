@@ -1,4 +1,21 @@
-export const setItem = (data, key ) => sessionStorage.setItem(key, JSON.stringify(data));
 
-
-export const getItem = (key) => sessionStorage[key] ? JSON.parse(sessionStorage[key]) : undefined ;
+export const setItem = (value,name,days = 10) => {
+    console.log(value,name)
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value.token.toString() || "")  + expires + "; path=/";
+}
+export const getItem = (name) => {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for(let i=0;i < ca.length;i++) {
+        let c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}

@@ -14,7 +14,7 @@ function App({ children }) {
 //     }
 //   },[]);
 useEffect(()=>{
-    if (getItem("token")?.token !== undefined) {
+    if (getItem("token") !== undefined) {
         dispatch(getUserDetails());
     } else {
 

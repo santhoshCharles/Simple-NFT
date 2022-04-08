@@ -7,7 +7,7 @@ export const apiCallFunction =
   (payload, type, apiLink, dispatchFunction, succMessage) =>
   async (dispatch, getState) => {
     const headers = {
-      authorization: `Bearer ${getItem("token")?.token}`,
+      authorization: `Bearer ${getItem("token")}`,
     };
     switch (type) {
       case "POST":
@@ -131,8 +131,8 @@ export const apiCallFunction =
 
 export const apiCallWithoutRedux = async (payload, type, apiLink) => {
   const headers = {
-    refreshToken: `Bearer ${getItem("refreshToken")?.token}`,
-    authorization: `Bearer ${getItem("token")?.token}`,
+    refreshToken: `Bearer ${getItem("refreshToken")}`,
+    authorization: `Bearer ${getItem("token")}`,
   };
   switch (type) {
     case "POST":

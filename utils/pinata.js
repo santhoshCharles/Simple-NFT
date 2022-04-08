@@ -7,7 +7,6 @@ import { PINATA_KEY, PINATA_SECRET_KEY } from "../constant/ConfigKey";
 const key = PINATA_KEY;
 const secret = PINATA_SECRET_KEY;
 
-console.log('key', key, secret);
 
 export const pinJSONToIPFS = async (JSONBody) => {
   const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
@@ -54,9 +53,7 @@ export const getPinatadata = () => {
         const NFT = await Promise.allSettled(hashDataResponce);
         const state = getState();
         const { userName } = state.reducers.loginDetails;
-        console.log('nft', NFT, state);
         const filterNFT = NFT.filter( nft => nft.value.data.title.userName === userName );
-        console.log('nft', NFT, state, filterNFT);
         dispatch(setNft(filterNFT));
       })
       .catch(function (error) {
